@@ -1,0 +1,71 @@
+{
+  "$schema": "https://design-tokens.org/draft",
+  "meta": {
+    "brand": "ElaRater",
+    "version": "v3",
+    "direction": "Office of Ride Quality",
+    "generated": "2026-08-31",
+    "note": "v3 is canonical. v1 (industrial) and v2 (lobby daylight) are archived in brand/ for reference only — do not mix palettes."
+  },
+
+  "color": {
+    "stock":        { "value": "#EFE9D8", "use": "Certificate paper, primary light surface" },
+    "stockDeep":    { "value": "#E4DCC6", "use": "Pressed / hovered paper surface" },
+    "tint":         { "value": "#B9CCB6", "use": "Guilloche security pattern, ~50% opacity only" },
+    "ink":          { "value": "#1E1C17", "use": "Typewriter values, primary text on paper" },
+    "office":       { "value": "#0E6B62", "use": "Authority ink — score, titles, primary action" },
+    "officeLight":  { "value": "#5FC7B8", "use": "Office ink on dark surfaces" },
+    "stamp":        { "value": "#B0342C", "use": "Seal, serial number, VOID line, CONDEMNED state" },
+    "brass":        { "value": "#B08A3C", "use": "Border rules, frame, screws, dividers" },
+    "fade":         { "value": "#7A7565", "use": "Form labels, small print, disabled" },
+    "wall":         { "value": "#17332F", "use": "App background — the elevator car interior" },
+    "wallLift":     { "value": "#1E413C", "use": "Raised surface on wall (cards, sheets, tab bar)" },
+    "wallText":     { "value": "#EFE9D8", "use": "Text on wall" },
+    "wallTextDim":  { "value": "#A9C4BE", "use": "Secondary text on wall" }
+  },
+
+  "font": {
+    "authority": { "value": "AlfaSlabOne-Regular", "use": "Wordmark and certificate authority line ONLY. Never body copy." },
+    "form":      { "value": "Archivo", "axes": { "wght": [400, 700], "wdth": [88, 100] }, "use": "Form labels in tracked caps, UI text, headlines" },
+    "typed":     { "value": "CourierPrime", "weights": ["Regular", "Bold"], "use": "Anything the inspector 'typed' — field values, remarks, serials" }
+  },
+
+  "type": {
+    "formLabel":   { "font": "form",      "size": 11, "weight": 700, "tracking": 2.2, "case": "upper" },
+    "formLabelLg": { "font": "form",      "size": 15, "weight": 700, "tracking": 5.6, "case": "upper" },
+    "certTitle":   { "font": "form",      "size": 21, "weight": 700, "tracking": 7.0, "case": "upper" },
+    "typedValue":  { "font": "typed",     "size": 19, "weight": 700, "tracking": 0 },
+    "typedBody":   { "font": "typed",     "size": 15, "weight": 400, "tracking": 0 },
+    "score":       { "font": "authority", "size": 104, "weight": 400, "tracking": 0 },
+    "wordmark":    { "font": "authority", "size": 62, "weight": 400, "tracking": 0 },
+    "headline":    { "font": "form",      "size": 40, "weight": 700, "tracking": -0.4 },
+    "body":        { "font": "form",      "size": 17, "weight": 500, "tracking": 0 }
+  },
+
+  "space": { "xs": 4, "sm": 8, "md": 16, "lg": 24, "xl": 40, "xxl": 64 },
+  "radius": { "sm": 3, "md": 8, "lg": 16, "icon": 115, "pill": 999 },
+  "border": { "hairline": 1.2, "rule": 1.6, "frame": 3.5 },
+
+  "certificate": {
+    "canvas": { "width": 900, "height": 662 },
+    "note": "All certificate geometry is authored in this 900x662 space and scaled. Never re-lay-out the form — scale it.",
+    "bands": [
+      { "min": 4.5, "max": 5.0, "label": "EXCELLENT",    "scoreColor": "office", "sealColor": "stamp" },
+      { "min": 3.5, "max": 4.4, "label": "SATISFACTORY", "scoreColor": "office", "sealColor": "stamp" },
+      { "min": 2.5, "max": 3.4, "label": "ACCEPTABLE",   "scoreColor": "office", "sealColor": "stamp" },
+      { "min": 1.5, "max": 2.4, "label": "DEFICIENT",    "scoreColor": "stamp",  "sealColor": "stamp" },
+      { "min": 0.0, "max": 1.4, "label": "CONDEMNED",    "scoreColor": "stamp",  "sealColor": "stamp" }
+    ],
+    "fields": [
+      { "key": "location",     "label": "LOCATION OF INSTALLATION", "maxChars": 28 },
+      { "key": "serial",       "label": "SERIAL NUMBER",            "maxChars": 16 },
+      { "key": "manufacturer", "label": "MANUFACTURER / MODEL",     "maxChars": 18 },
+      { "key": "capacity",     "label": "RATED CAPACITY",           "maxChars": 11 },
+      { "key": "floors",       "label": "FLOORS SERVED",            "maxChars": 12 },
+      { "key": "remark1",      "label": "INSPECTOR'S REMARKS",      "maxChars": 48 },
+      { "key": "remark2",      "label": null,                        "maxChars": 48 },
+      { "key": "inspectedOn",  "label": "INSPECTED",                "format": "YYYY-MM-DD" },
+      { "key": "score",        "label": "FINDING OF THE INSPECTOR", "range": [0, 5], "step": 0.1 }
+    ]
+  }
+}

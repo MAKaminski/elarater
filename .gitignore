@@ -41,3 +41,20 @@ example
 # generated native folders
 /ios
 /android
+
+# secrets — this repo is public
+.env
+.env.*
+!.env.example
+*.p8
+*.p12
+service-account*.json
+
+# supabase local
+supabase/.branches
+supabase/.temp
+.supabase/
+
+# build artifacts
+.artifacts/
+.vercel/
