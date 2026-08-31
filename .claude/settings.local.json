@@ -6,7 +6,8 @@
       "Bash(npm run *)",
       "Bash(git commit -q -m 'Phase 6 \\(part\\): middleware layer, certificate permalink, OG image function *)",
       "Bash(git commit -q -m 'Fix certificate permalink OG tags *)",
-      "Bash(git commit -q -m 'Phase 5: core loop — nearby, rate flow, share, offline queue *)"
+      "Bash(git commit -q -m 'Phase 5: core loop — nearby, rate flow, share, offline queue *)",
+      "Bash(git commit -q -m 'Add ARCHITECTURE.md, ADRs, CI, and the test suite *)"
     ]
   }
 }

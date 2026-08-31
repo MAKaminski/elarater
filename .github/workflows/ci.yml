@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    name: typecheck · tests · certificate parity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+
+      # The generated files are committed, so drift is a build failure rather than a
+      # surprise at runtime.
+      - name: Generated files are current
+        run: |
+          npm run gen
+          git diff --exit-code src/theme/tokens.ts src/lib/certificate/glyphs.gen.ts
+
+      - run: npm run typecheck
+      - run: npm test
+
+      # Phase 2 acceptance: the port must stay identical to the reference the brand
+      # generator produced.
+      - name: Certificate matches brand/v3/certificate-hero.svg
+        run: npm run verify:certificate
+
+      - run: npm run build:web
+
+  database:
+    name: schema · RLS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      # Phase 3 acceptance: the schema builds clean from zero, and a user cannot read
+      # another's hidden rating, write a derived column, or see a blocked author.
+      - name: supabase db reset
+        run: supabase db start && supabase db reset
+
+      - name: RLS policy negatives
+        run: npm run test:rls
+
+      - name: Schema lint
+        run: supabase db lint --level error --schema public
