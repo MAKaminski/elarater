@@ -30,7 +30,7 @@ broken doc, not a broken diagram.
 <!-- generated:inventory -->
 | Layer | Count | Detail |
 |---|---|---|
-| Front-end — routes | 13 | / · /(auth)/sign-in · /(auth)/terms-gate · /(tabs) · /(tabs)/profile · /c/[serial] · /delete-account · /elevator/[id] · /privacy · /rate/[elevatorId] · /settings · /settings/account · /terms |
+| Front-end — routes | 14 | / · /(auth)/sign-in · /(auth)/terms-gate · /(tabs) · /(tabs)/profile · /c/[serial] · /delete-account · /dev/primitives · /elevator/[id] · /privacy · /rate/[elevatorId] · /settings · /settings/account · /terms |
 | Front-end — primitives | 8 | FormLabel · TypedValue · Rule · StampSeal · Lantern · PaperSurface · WallSurface · ScoreDisplay |
 | Front-end — other components | 6 | Certificate · Frame · SceneNodes · ActionButton · ReportSheet · LegalPage |
 | Back-end — tables | 10 | blocks · buildings · certificates · elevators · metro_sequences · photos · profiles · ratings · reports · votes |
