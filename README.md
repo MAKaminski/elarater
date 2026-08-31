@@ -1,56 +1,52 @@
-# Welcome to your Expo app 👋
+# ElaRater
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Rate the elevator you are standing in. Get back an official-looking inspection
+certificate you actually want to post.
 
-## Get started
+**Live:** https://elarater.vercel.app · [`ATL-000003`](https://elarater.vercel.app/c/ATL-000003) is the CONDEMNED one.
 
-1. Install dependencies
+One Expo codebase shipping to iOS, Android and web. The certificate is the product:
+it is the rating result screen, the share image, the web permalink and the marketing
+asset — one component, four uses.
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Getting started
 
 ```bash
-npm run reset-project
+npm install
+supabase start      # requires Docker; the app defaults to this stack in development
+npm run gen         # design tokens + baked glyph outlines
+npm start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+No environment file is needed for development — `getSupabase()` defaults to the local
+stack. Production configuration lives only in the Vercel project. See `env.example`.
 
-### Other setup steps
+## Layout
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+| Path | What |
+|---|---|
+| `src/app/` | Expo Router routes. URLs are real; `/c/[serial]` is the sharing surface. |
+| `src/components/primitives/` | The eight primitives. There is no ninth. |
+| `src/lib/certificate/` | `geometry.ts` is the single source of every coordinate. |
+| `supabase/migrations/` | The whole schema, RLS on from day one. |
+| `api/` | Vercel Functions: the Expo server entry, the permalink, the OG renderer. |
+| `docs/` | The specs this was built from. `CLAUDE.md` is the guardrail file. |
+| `ARCHITECTURE.md` | ERD and inventory, generated from the live schema. |
 
-## Learn more
+## Commands
 
-To learn more about developing your project with Expo, look at the following resources:
+| Command | Does |
+|---|---|
+| `npm start` | Dev server for all three targets |
+| `npm run gen` | Regenerate `theme/tokens.ts` and `certificate/glyphs.gen.ts` |
+| `npm run typecheck` | `tsc --noEmit`, strict |
+| `npm test` | Score bands, remark moderation, seal arc-text orientation |
+| `npm run verify:certificate` | Pixel-diff against `brand/v3/certificate-hero.svg` |
+| `npm run test:rls` | RLS policy negatives against the local stack |
+| `npm run arch:check` | Fail if `ARCHITECTURE.md` has drifted |
+| `npm run build:web` | Production web build (`dist/client` + `dist/server`) |
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Licences
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Alfa Slab One, Archivo and Courier Prime are SIL Open Font License; the licence files
+ship alongside them in `assets/fonts/` and `brand/fonts/`.

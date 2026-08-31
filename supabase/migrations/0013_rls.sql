@@ -133,3 +133,4 @@ grant update on public.profiles to authenticated;
 
 -- Deliberately NOT granted: insert/update/delete on certificates (trigger-owned) and
 -- anything at all on metro_sequences.
+

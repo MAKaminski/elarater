@@ -34,7 +34,7 @@ broken doc, not a broken diagram.
 | Front-end — primitives | 8 | FormLabel · TypedValue · Rule · StampSeal · Lantern · PaperSurface · WallSurface · ScoreDisplay |
 | Front-end — other components | 6 | Certificate · Frame · SceneNodes · ActionButton · ReportSheet · LegalPage |
 | Back-end — tables | 10 | blocks · buildings · certificates · elevators · metro_sequences · photos · profiles · ratings · reports · votes |
-| Back-end — migrations | 14 | 0001_extensions.sql … 0014_storage.sql |
+| Back-end — migrations | 15 | 0001_extensions.sql … 0015_service_role_grants.sql |
 | Middleware — Supabase Edge Functions | 2 | delete-account · moderate-remarks |
 | Middleware — Vercel Functions | 3 | c.ts · index.ts · og.ts |
 <!-- /generated:inventory -->

@@ -32,7 +32,38 @@ export async function createRating(input: CreateRatingInput, userId: string) {
     }
     throw new Error(`createRating: ${error.message}`);
   }
+
+  // The row lands as 'pending' and only 'approved' rows are publicly readable, so
+  // without this the certificate would never appear. Screening it immediately keeps
+  // "certificate renders immediately" true (docs/01-product-spec.md) while preserving
+  // the ordering the store policies actually require: nothing is visible until it has
+  // been screened.
+  //
+  // Failure here is not fatal — the row simply stays pending for the sweep to pick up.
+  await moderateNow(data.id);
+
   return data.id;
+}
+
+/**
+ * Screen one rating now. Deliberately swallows its error: a moderation outage must
+ * not lose a user's inspection, and 'pending' is the safe state to be left in.
+ */
+async function moderateNow(ratingId: string): Promise<void> {
+  try {
+    await getSupabase().functions.invoke('moderate-remarks', { body: { ids: [ratingId] } });
+  } catch {
+    // left pending; the sweep will get it
+  }
+}
+
+/** Sweep every pending rating. Used after an offline flush and by the backstop job. */
+export async function sweepModeration(): Promise<void> {
+  try {
+    await getSupabase().functions.invoke('moderate-remarks', { body: {} });
+  } catch {
+    // best effort
+  }
 }
 
 /** The certificate for a rating, once moderation has cleared it. */

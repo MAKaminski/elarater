@@ -11,7 +11,7 @@
  * server-side — so a queued certificate renders with a PENDING serial until flush.
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createRating } from '../api/ratings';
+import { createRating, sweepModeration } from '../api/ratings';
 import type { CreateRatingInput } from '../schemas/rating';
 
 const KEY = 'elarater.pending-ratings.v1';
@@ -88,5 +88,7 @@ export async function flush(userId: string): Promise<FlushResult> {
   }
 
   await write(failed);
+  // A flush can screen several rows at once; sweep in case any invoke was dropped.
+  if (flushed.length > 0) await sweepModeration();
   return { flushed, failed };
 }

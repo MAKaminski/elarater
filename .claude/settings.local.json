@@ -10,7 +10,11 @@
       "Bash(git commit -q -m 'Add ARCHITECTURE.md, ADRs, CI, and the test suite *)",
       "Bash(npx expo *)",
       "Bash(git commit -q -m 'Fix hydration mismatch on server-rendered routes *)",
-      "Bash(git commit -q -m 'Hold the permalink in its loading state until mount *)"
+      "Bash(git commit -q -m 'Hold the permalink in its loading state until mount *)",
+      "Bash(psql postgresql://postgres:postgres@127.0.0.1:54322/postgres -q -c ' *)",
+      "Bash(curl -s -X POST http://127.0.0.1:54321/functions/v1/moderate-remarks -H \"Content-Type: application/json\" -d '{}')",
+      "Bash(psql postgresql://postgres:postgres@127.0.0.1:54322/postgres -P pager=off -c ' *)",
+      "Bash(git commit -q -m 'Screen ratings on create; grant the service role; add README *)"
     ]
   }
 }
