@@ -64,7 +64,8 @@
     "gen:glyphs": "tsx scripts/build-glyphs.ts",
     "gen": "npm run gen:tokens && npm run gen:glyphs",
     "verify:certificate": "tsx scripts/verify-certificate.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build:web": "npm run gen && expo export -p web"
   },
   "private": true
 }

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -q -m 'Phase 0-1: app config, eight primitives, Vercel server-output wiring *)"
+    ]
+  }
+}

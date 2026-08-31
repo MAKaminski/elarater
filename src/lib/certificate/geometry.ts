@@ -89,8 +89,8 @@ const field = (
 
 // ------------------------------------------------------------- fixed chrome bits
 
-/** The security-tint wave pattern. 26 rows of phase-shifted sine. */
-function guilloche(
+/** The security-tint wave pattern. 26 rows of phase-shifted sine. Reused by PaperSurface. */
+export function guillocheNodes(
   x: number,
   y: number,
   w: number,
@@ -246,7 +246,7 @@ export function certificate(p: CertificateProps): Node[] {
     id: 'cc',
     children: [{ t: 'rect', x: 30, y: 30, w: CW - 60, h: CH - 60, rx: 4 }],
   });
-  b.push({ ...group(guilloche(30, 30, CW - 60, CH - 60)), clipPath: 'cc' } as Node);
+  b.push({ ...group(guillocheNodes(30, 30, CW - 60, CH - 60)), clipPath: 'cc' } as Node);
 
   // CONDEMNED: the diagonal band's fill sits BEHIND the form at 6% so the remarks stay
   // readable through it. Only its text is struck at 100%, further down.

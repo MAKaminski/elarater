@@ -1,40 +1,80 @@
 {
   "expo": {
-    "name": "Elerator",
-    "slug": "Elerator",
+    "name": "ElaRater",
+    "slug": "elarater",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "elerator",
-    "userInterfaceStyle": "automatic",
+    "scheme": "elarater",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#17332F",
+    "primaryColor": "#0E6B62",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "supportsTablet": true,
+      "bundleIdentifier": "com.modularequity.elarater",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "ElaRater uses your location to find elevators in the building you're standing in.",
+        "NSCameraUsageDescription": "Take a photo of the elevator you're inspecting to attach to your certificate.",
+        "NSPhotoLibraryAddUsageDescription": "Save your certificate to your photo library.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "package": "com.modularequity.elarater",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#17332F",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "permissions": ["ACCESS_COARSE_LOCATION", "CAMERA"],
+      "blockedPermissions": ["android.permission.ACCESS_FINE_LOCATION"],
+      "predictiveBackGestureEnabled": false,
+      "edgeToEdgeEnabled": true
     },
     "web": {
-      "output": "static",
+      "output": "server",
+      "bundler": "metro",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
       "expo-router",
+      "expo-secure-store",
+      "expo-sharing",
+      "expo-apple-authentication",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "ElaRater uses your location to find elevators in the building you're standing in.",
+          "isAndroidBackgroundLocationEnabled": false
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Attach a photo of the elevator you're inspecting to your certificate.",
+          "cameraPermission": "Take a photo of the elevator you're inspecting to attach to your certificate."
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/AlfaSlabOne-Regular.ttf",
+            "./assets/fonts/Archivo-Variable.ttf",
+            "./assets/fonts/CourierPrime-Regular.ttf",
+            "./assets/fonts/CourierPrime-Bold.ttf"
+          ]
+        }
+      ],
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#17332F",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 160
         }
-      ],
-      "expo-secure-store",
-      "expo-sharing"
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
