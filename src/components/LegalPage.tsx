@@ -2,7 +2,8 @@
  * Shared shell for the three public legal routes. Composed from existing primitives;
  * introduces no new visual idea.
  */
-import { ScrollView, Text, View, useWindowDimensions } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
+import { useResponsive } from '@/lib/useResponsive';
 import { FormLabel, PaperSurface, Rule, WallSurface } from './primitives';
 import { color, font, space } from '@/theme/tokens';
 
@@ -17,8 +18,7 @@ export function LegalPage({
   updated: string;
   sections: Section[];
 }) {
-  const { width } = useWindowDimensions();
-  const wide = width >= 900;
+  const { isWide: wide } = useResponsive();
 
   return (
     <WallSurface>

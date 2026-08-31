@@ -8,7 +8,8 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Pressable, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native';
+import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { useResponsive } from '@/lib/useResponsive';
 import { ActionButton } from '@/components/ActionButton';
 import { FormLabel, PaperSurface, Rule, ScoreDisplay, WallSurface } from '@/components/primitives';
 import { createRating } from '@/lib/api/ratings';
@@ -35,7 +36,7 @@ export default function RateFlow() {
   const queryClient = useQueryClient();
   const { user } = useSession();
   const { canPost } = useProfile();
-  const { width } = useWindowDimensions();
+  const { width } = useResponsive();
 
   const [scores, setScores] = useState<Scores>({
     smooth: null,

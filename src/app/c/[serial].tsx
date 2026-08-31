@@ -6,7 +6,8 @@
 import { Link, useLocalSearchParams } from 'expo-router';
 import Head from 'expo-router/head';
 import { useQuery } from '@tanstack/react-query';
-import { ActivityIndicator, ScrollView, Text, View, useWindowDimensions } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import { useResponsive } from '@/lib/useResponsive';
 import { Certificate } from '@/components/certificate/Certificate';
 import { FormLabel, Lantern, PaperSurface, Rule, StampSeal, WallSurface } from '@/components/primitives';
 import { getCertificateBySerial, toCertificateProps } from '@/lib/api/certificates';
@@ -17,8 +18,7 @@ import { color, font, space } from '@/theme/tokens';
 export default function CertificatePermalink() {
   const { serial: raw } = useLocalSearchParams<{ serial: string }>();
   const serial = (raw ?? '').toUpperCase();
-  const { width } = useWindowDimensions();
-  const wide = width >= 900;
+  const { isWide: wide } = useResponsive();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['certificate', serial],

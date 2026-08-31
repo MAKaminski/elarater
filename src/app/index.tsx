@@ -3,7 +3,8 @@
  * Assembled from the same primitives as every other screen.
  */
 import { Link } from 'expo-router';
-import { ScrollView, View, Text, useWindowDimensions } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
+import { useResponsive } from '@/lib/useResponsive';
 import { Certificate } from '@/components/certificate/Certificate';
 import { FormLabel, Lantern, PaperSurface, Rule, WallSurface } from '@/components/primitives';
 import { color, font, space } from '@/theme/tokens';
@@ -21,8 +22,7 @@ const SAMPLE = {
 };
 
 export default function Landing() {
-  const { width } = useWindowDimensions();
-  const wide = width >= 900;
+  const { isWide: wide } = useResponsive();
 
   return (
     <WallSurface>
