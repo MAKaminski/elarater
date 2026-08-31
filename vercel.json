@@ -7,7 +7,20 @@
   "functions": {
     "api/index.ts": {
       "includeFiles": "dist/server/**"
+    },
+    "api/og.ts": {
+      "includeFiles": "node_modules/@resvg/resvg-wasm/**",
+      "maxDuration": 30
     }
   },
-  "rewrites": [{ "source": "/(.*)", "destination": "/api/index" }]
+  "rewrites": [
+    {
+      "source": "/api/og/:serial",
+      "destination": "/api/og?serial=:serial"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/api/index"
+    }
+  ]
 }

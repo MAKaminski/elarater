@@ -11,7 +11,7 @@
  *
  * Nine variables change per certificate. Everything else is fixed chrome.
  */
-import { canvas, color } from '@/theme/tokens';
+import { canvas, color } from '../../theme/tokens';
 import { bandForScore, formatScore, isCondemned } from './bands';
 import { group, n1, n0, type Node } from './scene';
 import { layoutArcText, layoutText, measureText } from './text';

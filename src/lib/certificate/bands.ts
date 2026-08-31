@@ -3,7 +3,7 @@
  * whether the CONDEMNED variant renders — which docs/01-product-spec.md calls the
  * growth engine ("nobody screenshots a 4.5").
  */
-import { bands, type BandLabel } from '@/theme/tokens';
+import { bands, type BandLabel } from '../../theme/tokens';
 
 export type { BandLabel };
 

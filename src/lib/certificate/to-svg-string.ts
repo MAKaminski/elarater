@@ -5,7 +5,7 @@
  * react-native-view-shot is native-only). Because every glyph is already an outline,
  * the output contains zero <text> elements and the rasteriser needs no fonts at all.
  */
-import { color } from '@/theme/tokens';
+import { color } from '../../theme/tokens';
 import type { Node } from './scene';
 import { CH, CW, certificate, type CertificateProps } from './geometry';
 
