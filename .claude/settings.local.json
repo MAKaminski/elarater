@@ -4,7 +4,8 @@
       "Bash(git add *)",
       "Bash(git commit -q -m 'Phase 0-1: app config, eight primitives, Vercel server-output wiring *)",
       "Bash(npm run *)",
-      "Bash(git commit -q -m 'Phase 6 \\(part\\): middleware layer, certificate permalink, OG image function *)"
+      "Bash(git commit -q -m 'Phase 6 \\(part\\): middleware layer, certificate permalink, OG image function *)",
+      "Bash(git commit -q -m 'Fix certificate permalink OG tags *)"
     ]
   }
 }

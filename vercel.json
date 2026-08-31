@@ -11,12 +11,19 @@
     "api/og.ts": {
       "includeFiles": "node_modules/@resvg/resvg-wasm/**",
       "maxDuration": 30
+    },
+    "api/c.ts": {
+      "includeFiles": "dist/server/**"
     }
   },
   "rewrites": [
     {
       "source": "/api/og/:serial",
       "destination": "/api/og?serial=:serial"
+    },
+    {
+      "source": "/c/:serial",
+      "destination": "/api/c?serial=:serial"
     },
     {
       "source": "/(.*)",
