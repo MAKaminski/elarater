@@ -58,3 +58,5 @@ supabase/.temp
 # build artifacts
 .artifacts/
 .vercel/
+.vercel
+.env*
