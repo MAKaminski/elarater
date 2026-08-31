@@ -9,7 +9,8 @@
       "Bash(git commit -q -m 'Phase 5: core loop — nearby, rate flow, share, offline queue *)",
       "Bash(git commit -q -m 'Add ARCHITECTURE.md, ADRs, CI, and the test suite *)",
       "Bash(npx expo *)",
-      "Bash(git commit -q -m 'Fix hydration mismatch on server-rendered routes *)"
+      "Bash(git commit -q -m 'Fix hydration mismatch on server-rendered routes *)",
+      "Bash(git commit -q -m 'Hold the permalink in its loading state until mount *)"
     ]
   }
 }

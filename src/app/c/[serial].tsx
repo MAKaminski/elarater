@@ -18,13 +18,22 @@ import { color, font, space } from '@/theme/tokens';
 export default function CertificatePermalink() {
   const { serial: raw } = useLocalSearchParams<{ serial: string }>();
   const serial = (raw ?? '').toUpperCase();
-  const { isWide: wide } = useResponsive();
+  const { isWide: wide, mounted } = useResponsive();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['certificate', serial],
     queryFn: () => getCertificateBySerial(serial),
     enabled: isSerial(serial),
   });
+
+  /*
+   * The prerendered shell is built once, for the literal route segment, so on the
+   * server `serial` is "[SERIAL]", the query is disabled, and the error branch
+   * renders. In the browser the serial is real, the query is enabled, and the
+   * loading branch renders. Hydrating those two against each other is a mismatch,
+   * so both sides show the same thing until mount.
+   */
+  const pending = !mounted || isLoading;
 
   const props = data ? toCertificateProps(data) : null;
 
@@ -69,7 +78,7 @@ export default function CertificatePermalink() {
         </Link>
 
         <View style={{ maxWidth: 1000, width: '100%', alignSelf: 'center', gap: space.md }}>
-          {isLoading ? (
+          {pending ? (
             <View style={{ alignItems: 'center', gap: space.md, paddingVertical: space.xxl }}>
               {/* Loading is the seal turning slowly. Never a spinner. */}
               <StampSeal size={92} animate="spin" opacity={0.5} />
@@ -80,7 +89,7 @@ export default function CertificatePermalink() {
             </View>
           ) : null}
 
-          {!isLoading && (isError || !props) ? (
+          {!pending && (isError || !props) ? (
             <View style={{ alignItems: 'center', gap: space.md, paddingVertical: space.xxl }}>
               <StampSeal size={92} tone="stamp" opacity={0.6} />
               <FormLabel size={12} tracking={2.6} tone="wallTextDim">
@@ -92,7 +101,7 @@ export default function CertificatePermalink() {
             </View>
           ) : null}
 
-          {props ? (
+          {!pending && props ? (
             <>
               <PaperSurface padding="xs" guilloche={false}>
                 <Certificate {...props} />
