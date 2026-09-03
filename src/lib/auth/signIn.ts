@@ -49,6 +49,34 @@ export async function signInWithApple(): Promise<void> {
   if (error) throw new Error(error.message);
 }
 
+/**
+ * Continue as a guest.
+ *
+ * Creates a real auth user and a real profiles row, so every guard still applies:
+ * the terms gate, one rating per elevator per day, and remark screening. It exists
+ * because magic-link delivery needs SMTP, and until that is wired an email-only
+ * sign-in means nobody can rate anything at all.
+ *
+ * Apple also prefers this: 5.1.1(v) says an app may not require an account for
+ * features that do not need one.
+ */
+export async function continueAsGuest(): Promise<void> {
+  const { error } = await getSupabase().auth.signInAnonymously();
+  if (error) {
+    throw new Error(
+      error.message.includes('disabled')
+        ? 'Guest access is turned off for this project.'
+        : error.message,
+    );
+  }
+}
+
+/** True once the session belongs to an anonymous user, so the UI can offer an upgrade. */
+export async function isGuest(): Promise<boolean> {
+  const { data } = await getSupabase().auth.getUser();
+  return data.user?.is_anonymous === true;
+}
+
 export async function signOut(): Promise<void> {
   const { error } = await getSupabase().auth.signOut();
   if (error) throw new Error(error.message);

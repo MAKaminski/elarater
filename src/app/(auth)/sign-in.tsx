@@ -7,13 +7,13 @@ import { useState } from 'react';
 import { ScrollView, Text, TextInput, View } from 'react-native';
 import { ActionButton } from '@/components/ActionButton';
 import { FormLabel, PaperSurface, Rule, StampSeal, WallSurface } from '@/components/primitives';
-import { APPLE_SIGN_IN_ENABLED, sendMagicLink, signInWithApple } from '@/lib/auth/signIn';
+import { APPLE_SIGN_IN_ENABLED, continueAsGuest, sendMagicLink, signInWithApple } from '@/lib/auth/signIn';
 import { color, font, radius, space } from '@/theme/tokens';
 
 export default function SignIn() {
   const router = useRouter();
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'guest' | 'error'>('idle');
   const [message, setMessage] = useState<string | null>(null);
 
   async function submit() {
@@ -117,6 +117,29 @@ export default function SignIn() {
         )}
 
         <Rule tone="brass" opacity={0.25} />
+
+        {/*
+          Guest access. Magic-link delivery needs SMTP, and an email-only sign-in
+          means nobody can rate anything until that is wired. A guest gets a real
+          profiles row, so the terms gate, the one-per-day limit and remark screening
+          all still apply.
+        */}
+        <ActionButton
+          label={status === 'guest' ? 'SIGNING IN…' : 'CONTINUE AS GUEST'}
+          lantern
+          disabled={status === 'guest'}
+          onPress={async () => {
+            setStatus('guest');
+            setMessage(null);
+            try {
+              await continueAsGuest();
+              router.replace('/(tabs)');
+            } catch (e) {
+              setStatus('error');
+              setMessage((e as Error).message);
+            }
+          }}
+        />
         <ActionButton label="BROWSE WITHOUT AN ACCOUNT" tone="quiet" onPress={() => router.replace('/(tabs)')} />
       </ScrollView>
     </WallSurface>

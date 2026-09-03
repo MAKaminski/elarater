@@ -24,6 +24,15 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="search"
+        options={{
+          title: 'Search',
+          tabBarIcon: ({ focused }) => (
+            <Lantern size={20} tone={focused ? 'officeLight' : 'wallTextDim'} opacity={focused ? 1 : 0.4} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',

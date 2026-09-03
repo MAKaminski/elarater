@@ -63,7 +63,13 @@ export default function ElevatorPage() {
         {hero ? (
           <View style={{ gap: space.md }}>
             <View style={{ gap: space.xs }}>
-              <FormLabel size={11} tone="wallTextDim">{hero.building_name}</FormLabel>
+              <Pressable
+                onPress={() => router.push(`/building/${hero.building_id}`)}
+                accessibilityRole="button"
+                accessibilityLabel={`All elevators at ${hero.building_name}`}
+              >
+                <FormLabel size={11} tone="wallTextDim">{`${hero.building_name} ›`}</FormLabel>
+              </Pressable>
               <FormLabel size={15} tracking={5.6} tone="wallText">{hero.elevator_label}</FormLabel>
             </View>
 

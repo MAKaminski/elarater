@@ -606,6 +606,27 @@ export type Database = {
     }
     Functions: {
       band_for_score: { Args: { p_score: number }; Returns: string }
+      building_detail: {
+        Args: { p_building_id: string }
+        Returns: {
+          address_line: string
+          building_avg: number
+          building_id: string
+          building_name: string
+          capacity_lb: number
+          city: string
+          current_band: string
+          elevator_id: string
+          floors_served: number
+          label: string
+          manufacturer: string
+          metro_code: string
+          model: string
+          rating_count: number
+          region: string
+          score_avg: number
+        }[]
+      }
       certificate_by_serial: {
         Args: { p_serial: string }
         Returns: {
@@ -660,6 +681,69 @@ export type Database = {
       }
       is_blocked: { Args: { p_other: string }; Returns: boolean }
       next_serial: { Args: { p_metro: string }; Returns: string }
+      recent_certificates: {
+        Args: { limit_n?: number }
+        Returns: {
+          address_line: string | null
+          author_display_name: string | null
+          author_handle: string | null
+          author_id: string | null
+          band: string | null
+          building_id: string | null
+          building_name: string | null
+          capacity_lb: number | null
+          character: number | null
+          city: string | null
+          created_at: string | null
+          elevator_id: string | null
+          elevator_label: string | null
+          floors_served: number | null
+          id: string | null
+          inspected_on: string | null
+          is_hidden: boolean | null
+          issued_at: string | null
+          manufacturer: string | null
+          metro_code: string | null
+          model: string | null
+          moderation_reason: string | null
+          moderation_status: string | null
+          remark_1: string | null
+          remark_2: string | null
+          render_path: string | null
+          score: number | null
+          serial: string | null
+          smooth: number | null
+          speedy: number | null
+          spotless: number | null
+          updated_at: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "visible_ratings"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      search_elevators: {
+        Args: { limit_n?: number; q: string }
+        Returns: {
+          address_line: string
+          building_id: string
+          building_name: string
+          capacity_lb: number
+          city: string
+          current_band: string
+          distance_m: number
+          elevator_id: string
+          floors_served: number
+          label: string
+          manufacturer: string
+          metro_code: string
+          model: string
+          rating_count: number
+          score_avg: number
+        }[]
+      }
       search_nearby_elevators: {
         Args: { lat: number; lng: number; radius_m?: number }
         Returns: {

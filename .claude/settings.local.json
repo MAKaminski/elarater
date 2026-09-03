@@ -15,7 +15,9 @@
       "Bash(curl -s -X POST http://127.0.0.1:54321/functions/v1/moderate-remarks -H \"Content-Type: application/json\" -d '{}')",
       "Bash(psql postgresql://postgres:postgres@127.0.0.1:54322/postgres -P pager=off -c ' *)",
       "Bash(git commit -q -m 'Screen ratings on create; grant the service role; add README *)",
-      "Bash(git commit -q -m 'Add /dev/primitives, the Phase 1 acceptance surface *)"
+      "Bash(git commit -q -m 'Add /dev/primitives, the Phase 1 acceptance surface *)",
+      "Bash(psql postgresql://postgres:postgres@127.0.0.1:54322/postgres -P pager=off -c 'select city, count\\(distinct b.id\\) as buildings, count\\(e.id\\) as elevators *)",
+      "Bash(git commit -q -m 'Make the app actually usable: discovery without GPS, and a way to sign in *)"
     ]
   }
 }

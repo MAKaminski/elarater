@@ -82,3 +82,94 @@ values
    'have filed a formal complaint.',
    'approved', date '2026-08-31')
 on conflict do nothing;
+
+-- ---------------------------------------------------------------------------
+-- A wider spread so search and the recent-findings feed have something to show.
+-- Real buildings and real addresses; the findings are invented, obviously.
+
+insert into public.buildings (id, name, address_line, city, region, country, postal_code,
+                              location, metro_code, created_by)
+values
+  ('aaaaaaaa-0000-4000-8000-000000000003', 'Ponce City Market', '675 Ponce De Leon Ave NE',
+   'Atlanta', 'GA', 'US', '30308',
+   extensions.ST_SetSRID(extensions.ST_MakePoint(-84.3660, 33.7726), 4326)::extensions.geography,
+   'ATL', '11111111-1111-4111-8111-111111111111'),
+  ('aaaaaaaa-0000-4000-8000-000000000004', 'The Empire State Building', '20 W 34th St',
+   'New York', 'NY', 'US', '10001',
+   extensions.ST_SetSRID(extensions.ST_MakePoint(-73.9857, 40.7484), 4326)::extensions.geography,
+   'NYC', '11111111-1111-4111-8111-111111111111'),
+  ('aaaaaaaa-0000-4000-8000-000000000005', 'Salesforce Tower', '415 Mission St',
+   'San Francisco', 'CA', 'US', '94105',
+   extensions.ST_SetSRID(extensions.ST_MakePoint(-122.3969, 37.7897), 4326)::extensions.geography,
+   'SFO', '22222222-2222-4222-8222-222222222222'),
+  ('aaaaaaaa-0000-4000-8000-000000000006', 'Willis Tower', '233 S Wacker Dr',
+   'Chicago', 'IL', 'US', '60606',
+   extensions.ST_SetSRID(extensions.ST_MakePoint(-87.6359, 41.8789), 4326)::extensions.geography,
+   'CHI', '22222222-2222-4222-8222-222222222222')
+on conflict (id) do nothing;
+
+insert into public.elevators (id, building_id, label, manufacturer, model, capacity_lb,
+                              floors_served, install_year, created_by)
+values
+  ('bbbbbbbb-0000-4000-8000-000000000004', 'aaaaaaaa-0000-4000-8000-000000000003',
+   'Market Hall Freight', 'Otis', 'Series 1', 5000, 5, '1926',
+   '11111111-1111-4111-8111-111111111111'),
+  ('bbbbbbbb-0000-4000-8000-000000000005', 'aaaaaaaa-0000-4000-8000-000000000003',
+   'Tower Car 1', 'Schindler', '5500', 2500, 9, '2014',
+   '11111111-1111-4111-8111-111111111111'),
+  ('bbbbbbbb-0000-4000-8000-000000000006', 'aaaaaaaa-0000-4000-8000-000000000004',
+   'Observatory Express', 'Otis', 'Gen2', 3000, 86, '1931',
+   '11111111-1111-4111-8111-111111111111'),
+  ('bbbbbbbb-0000-4000-8000-000000000007', 'aaaaaaaa-0000-4000-8000-000000000004',
+   'Lobby Bank C', 'Otis', 'SkyRise', 2500, 40, '2009',
+   '22222222-2222-4222-8222-222222222222'),
+  ('bbbbbbbb-0000-4000-8000-000000000008', 'aaaaaaaa-0000-4000-8000-000000000005',
+   'Sky Lobby A', 'Kone', 'UltraRope', 3500, 61, '2018',
+   '22222222-2222-4222-8222-222222222222'),
+  ('bbbbbbbb-0000-4000-8000-000000000009', 'aaaaaaaa-0000-4000-8000-000000000006',
+   'Skydeck Express', 'ThyssenKrupp', 'Evolution', 3000, 103, '1973',
+   '22222222-2222-4222-8222-222222222222'),
+  ('bbbbbbbb-0000-4000-8000-00000000000a', 'aaaaaaaa-0000-4000-8000-000000000006',
+   'Parking Level Car', 'Dover', 'Impulse', 4000, 8, '1981',
+   '11111111-1111-4111-8111-111111111111')
+on conflict (id) do nothing;
+
+insert into public.ratings (elevator_id, author_id, smooth, speedy, spotless, character,
+                            remark_1, remark_2, moderation_status, inspected_on)
+values
+  ('bbbbbbbb-0000-4000-8000-000000000004', '11111111-1111-4111-8111-111111111111',
+   2, 2, 2, 5,
+   'Older than my grandmother and twice as loud.',
+   'Genuinely magnificent. Would ride again.',
+   'approved', date '2026-08-27'),
+  ('bbbbbbbb-0000-4000-8000-000000000005', '22222222-2222-4222-8222-222222222222',
+   5, 5, 5, 2,
+   'Flawless. Utterly without personality.',
+   'The elevator equivalent of a beige wall.',
+   'approved', date '2026-08-28'),
+  ('bbbbbbbb-0000-4000-8000-000000000006', '11111111-1111-4111-8111-111111111111',
+   4, 3, 5, 5,
+   'Eighty-six floors. Ears popped twice.',
+   'Worth it. The brass is immaculate.',
+   'approved', date '2026-08-26'),
+  ('bbbbbbbb-0000-4000-8000-000000000007', '22222222-2222-4222-8222-222222222222',
+   4, 2, 4, 3,
+   'Waited four minutes at lunchtime. Four.',
+   null,
+   'approved', date '2026-08-29'),
+  ('bbbbbbbb-0000-4000-8000-000000000008', '11111111-1111-4111-8111-111111111111',
+   5, 5, 5, 4,
+   'Sixty-one floors and I felt nothing at all.',
+   'Suspiciously smooth. What is it hiding?',
+   'approved', date '2026-08-30'),
+  ('bbbbbbbb-0000-4000-8000-000000000009', '22222222-2222-4222-8222-222222222222',
+   3, 4, 3, 4,
+   'Rattles above floor 90. Everyone pretends',
+   'not to notice. I noticed.',
+   'approved', date '2026-08-30'),
+  ('bbbbbbbb-0000-4000-8000-00000000000a', '11111111-1111-4111-8111-111111111111',
+   1, 1, 1, 2,
+   'Smells like 1981 and sounds like a threat.',
+   'The doors close at their own discretion.',
+   'approved', date '2026-08-31')
+on conflict do nothing;
