@@ -15,7 +15,8 @@ import { useEffect, useState } from 'react';
 import { FlatList, Pressable, Text, View } from 'react-native';
 import { ActionButton } from '@/components/ActionButton';
 import { ElevatorRow } from '@/components/ElevatorRow';
-import { FormLabel, PaperSurface, Rule, ScoreDisplay, StampSeal, TypedValue, WallSurface } from '@/components/primitives';
+import { FormLabel, PaperSurface, Rule, ScoreDisplay, TypedValue, WallSurface } from '@/components/primitives';
+import { QueryState } from '@/components/QueryState';
 import { recentCertificates, searchNearby } from '@/lib/api/elevators';
 import { useOfflineQueue } from '@/lib/offline/useOfflineQueue';
 import { color, font, space } from '@/theme/tokens';
@@ -96,10 +97,16 @@ export default function Nearby() {
         ) : null}
 
         {nearby.isLoading && !showingRecent ? (
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: space.md }}>
-            <StampSeal size={80} animate="spin" opacity={0.5} />
-            <FormLabel size={11} tone="wallTextDim">SURVEYING THE BUILDING</FormLabel>
-          </View>
+          <QueryState state="loading" label="SURVEYING THE BUILDING" />
+        ) : null}
+
+        {showingRecent && recent.isError ? (
+          <QueryState
+            state="error"
+            label="THE REGISTER IS UNAVAILABLE"
+            detail={(recent.error as Error)?.message}
+            onRetry={() => recent.refetch()}
+          />
         ) : null}
 
         {showingRecent ? (
@@ -108,10 +115,7 @@ export default function Nearby() {
             keyExtractor={(item) => item.id}
             ItemSeparatorComponent={() => <View style={{ height: space.sm }} />}
             ListEmptyComponent={
-              <View style={{ alignItems: 'center', paddingVertical: space.xxl, gap: space.md }}>
-                <StampSeal size={80} opacity={0.3} />
-                <FormLabel size={11} tone="wallTextDim">NO INSPECTIONS ON RECORD</FormLabel>
-              </View>
+              recent.isError ? null : <QueryState state="empty" label="NO INSPECTIONS ON RECORD" />
             }
             renderItem={({ item }) => (
               <Pressable

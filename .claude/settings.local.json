@@ -17,7 +17,10 @@
       "Bash(git commit -q -m 'Screen ratings on create; grant the service role; add README *)",
       "Bash(git commit -q -m 'Add /dev/primitives, the Phase 1 acceptance surface *)",
       "Bash(psql postgresql://postgres:postgres@127.0.0.1:54322/postgres -P pager=off -c 'select city, count\\(distinct b.id\\) as buildings, count\\(e.id\\) as elevators *)",
-      "Bash(git commit -q -m 'Make the app actually usable: discovery without GPS, and a way to sign in *)"
+      "Bash(git commit -q -m 'Make the app actually usable: discovery without GPS, and a way to sign in *)",
+      "Bash(grep -vE \"dependabot|^remote:\\\\s*$\")",
+      "Bash(git commit *)",
+      "Bash(rm -f /tmp/msg.txt)"
     ]
   }
 }

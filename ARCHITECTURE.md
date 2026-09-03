@@ -32,7 +32,7 @@ broken doc, not a broken diagram.
 |---|---|---|
 | Front-end — routes | 16 | / · /(auth)/sign-in · /(auth)/terms-gate · /(tabs) · /(tabs)/profile · /(tabs)/search · /building/[id] · /c/[serial] · /delete-account · /dev/primitives · /elevator/[id] · /privacy · /rate/[elevatorId] · /settings · /settings/account · /terms |
 | Front-end — primitives | 8 | FormLabel · TypedValue · Rule · StampSeal · Lantern · PaperSurface · WallSurface · ScoreDisplay |
-| Front-end — other components | 7 | Certificate · Frame · SceneNodes · ActionButton · ReportSheet · LegalPage |
+| Front-end — other components | 8 | Certificate · Frame · SceneNodes · ActionButton · ReportSheet · LegalPage |
 | Back-end — tables | 10 | blocks · buildings · certificates · elevators · metro_sequences · photos · profiles · ratings · reports · votes |
 | Back-end — migrations | 17 | 0001_extensions.sql … 0017_guest_profiles.sql |
 | Middleware — Supabase Edge Functions | 2 | delete-account · moderate-remarks |

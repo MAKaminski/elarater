@@ -135,7 +135,7 @@ export async function getBuildingDetail(buildingId: string): Promise<BuildingDet
       average: first.building_avg === null ? null : Number(first.building_avg),
     },
     elevators: nearbyElevatorSchema.array().parse(
-      rows.map((r) => ({ ...r, distance_m: 0 })),
+      rows.map((r) => ({ ...r, distance_m: null })),
     ),
   };
 }

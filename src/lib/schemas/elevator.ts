@@ -16,7 +16,8 @@ export const nearbyElevatorSchema = z.object({
   address_line: z.string(),
   city: z.string(),
   metro_code: z.string(),
-  distance_m: z.number(),
+  /** Null for search and building results, which have no origin to measure from. */
+  distance_m: z.number().nullable(),
 });
 
 export type NearbyElevator = z.infer<typeof nearbyElevatorSchema>;

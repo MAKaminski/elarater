@@ -8,7 +8,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { FlatList, TextInput, View } from 'react-native';
 import { ElevatorRow } from '@/components/ElevatorRow';
-import { FormLabel, StampSeal, WallSurface } from '@/components/primitives';
+import { FormLabel, WallSurface } from '@/components/primitives';
+import { QueryState } from '@/components/QueryState';
 import { searchElevators } from '@/lib/api/elevators';
 import { color, font, radius, space } from '@/theme/tokens';
 
@@ -17,7 +18,7 @@ export default function Search() {
   const [query, setQuery] = useState('');
 
   // An empty query lists everything by popularity, so the screen is never blank.
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['search', query.trim()],
     queryFn: () => searchElevators(query.trim()),
   });
@@ -49,22 +50,21 @@ export default function Search() {
         />
 
         {isLoading ? (
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: space.md }}>
-            <StampSeal size={72} animate="spin" opacity={0.5} />
-            <FormLabel size={11} tone="wallTextDim">CONSULTING THE REGISTER</FormLabel>
-          </View>
+          <QueryState state="loading" label="CONSULTING THE REGISTER" />
+        ) : isError ? (
+          <QueryState
+            state="error"
+            label="THE REGISTER IS UNAVAILABLE"
+            detail={(error as Error)?.message}
+            onRetry={() => refetch()}
+          />
         ) : (
           <FlatList
             data={data ?? []}
             keyExtractor={(item) => item.elevator_id}
             ItemSeparatorComponent={() => <View style={{ height: space.sm }} />}
             keyboardShouldPersistTaps="handled"
-            ListEmptyComponent={
-              <View style={{ alignItems: 'center', paddingVertical: space.xxl, gap: space.md }}>
-                <StampSeal size={72} opacity={0.3} />
-                <FormLabel size={11} tone="wallTextDim">NOTHING ON RECORD</FormLabel>
-              </View>
-            }
+            ListEmptyComponent={<QueryState state="empty" label="NOTHING ON RECORD" />}
             renderItem={({ item }) => (
               <ElevatorRow
                 elevator={item}
