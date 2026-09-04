@@ -15,6 +15,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
+import jsQR from 'jsqr';
 import { certificateSvg, framedCertificateSvg } from '../src/lib/certificate/to-svg-string';
 import { CW, CH, type CertificateProps } from '../src/lib/certificate/geometry';
 
@@ -37,6 +38,12 @@ const SAMPLE: CertificateProps = {
 
 /** Accept sub-pixel antialiasing drift, reject anything structural. */
 const THRESHOLD_PCT = 0.5;
+
+/**
+ * The reference predates the QR, so the parity comparison runs without one. SAMPLE
+ * therefore carries no permalink; the QR gets its own check below, which is stronger
+ * than a pixel diff because it actually decodes.
+ */
 
 function raster(svg: string): PNG {
   const r = new Resvg(svg, { fitTo: { mode: 'width', value: CW } });
@@ -101,3 +108,39 @@ for (const [name, svg] of [
   writeFileSync(join(OUTDIR, name), png);
   console.log('wrote ' + name);
 }
+
+
+// ------------------------------------------------------- the QR actually scans
+//
+// A pixel diff would only prove the squares are where we put them. This renders the
+// certificate, rasterises it, and reads the code back with a real decoder — the same
+// operation a phone does pointing at a printed copy in an elevator.
+
+const PERMALINK = 'https://elarater.vercel.app/c/ATL-004572';
+
+function decodeQr(png: PNG, label: string): void {
+  const found = jsQR(new Uint8ClampedArray(png.data), png.width, png.height);
+  if (!found) {
+    console.error(`FAIL — no QR could be decoded from ${label}`);
+    process.exit(1);
+  }
+  if (found.data !== PERMALINK) {
+    console.error(`FAIL — ${label} decoded to ${found.data}, expected ${PERMALINK}`);
+    process.exit(1);
+  }
+  console.log(`ok   ${label} decodes to ${found.data}`);
+}
+
+const withQr = { ...SAMPLE, permalink: PERMALINK };
+
+// At authored size, and again at the 1200x630 OG size, which is where a scanner is
+// most likely to meet it after someone posts the link.
+decodeQr(raster(certificateSvg(withQr)), 'certificate at 900x662');
+
+const ogPng = new Resvg(framedCertificateSvg(withQr, { width: 1200, height: 630 }), {
+  fitTo: { mode: 'original' },
+}).render().asPng();
+decodeQr(PNG.sync.read(ogPng), 'OG image at 1200x630');
+
+writeFileSync(join(OUTDIR, 'with-qr.png'), PNG.sync.write(raster(certificateSvg(withQr))));
+console.log('wrote with-qr.png');

@@ -15,6 +15,7 @@ import { canvas, color } from '../../theme/tokens';
 import { bandForScore, formatScore, isCondemned } from './bands';
 import { group, n1, n0, type Node } from './scene';
 import { layoutArcText, layoutText, measureText } from './text';
+import { qrNodes } from './qr';
 
 export const CW = canvas.width; // 900
 export const CH = canvas.height; // 662
@@ -40,6 +41,12 @@ export type CertificateProps = {
   inspectedOn: string;
   /** Seal year on the stamp. */
   year?: string;
+  /**
+   * Absolute permalink encoded into the QR. Omit and no QR is drawn — which is how
+   * the parity test compares against brand/v3/certificate-hero.svg, a reference that
+   * predates the code.
+   */
+  permalink?: string;
 };
 
 // ----------------------------------------------------------------- type helpers
@@ -353,6 +360,19 @@ export function certificate(p: CertificateProps): Node[] {
   b.push(...label('OUT OF FIVE', 68 + sw, 486, 15, condemned ? color.stamp : color.ink, 4));
   b.push(...label(`RIDE QUALITY: ${band.label}`, 68 + sw, 512, 11, color.fade, 2.4));
   b.push(seal(724, 470, 92, { year, condemned }));
+
+  /*
+   * The QR sits in the empty block between the finding text and the seal — measured
+   * at 179 x 116 px, so a 104 px code clears both with room to spare. Beside the seal
+   * is also where a verification code belongs on a real inspection document.
+   *
+   * This is a deliberate amendment to CLAUDE.md rule 2, which said everything outside
+   * the nine variables is fixed chrome. See .claude/decisions/0004-qr-on-certificate.md
+   */
+  if (p.permalink) {
+    b.push(...qrNodes(p.permalink, { x: 476, y: 424, size: 104, fill: color.ink, backdrop: color.stock }));
+    b.push(...label('SCAN TO VERIFY', 528, 546, 8.5, color.fade, 2, 'middle'));
+  }
 
   // remarks — where the personality lives, and the main reason anyone shares this
   b.push({ t: 'rect', x: 60, y: 540, w: CW - 120, h: 1.2, fill: color.ink, op: 0.3 });

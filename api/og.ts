@@ -36,6 +36,14 @@ const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL ?? process.env.SUPABASE
 const supabaseKey =
   process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY;
 
+/** Prefer the request's own host so preview deployments link to themselves. */
+function siteBase(req: IncomingMessage): string {
+  const envBase = process.env.EXPO_PUBLIC_SITE_URL;
+  if (envBase) return envBase.replace(/\/$/, '');
+  const host = req.headers.host ?? 'elarater.vercel.app';
+  return `https://${host}`;
+}
+
 const FALLBACK = '—';
 const clip = (v: string | null | undefined, max: number, fallback = FALLBACK) =>
   (v && String(v).trim() ? String(v).trim().toUpperCase() : fallback).slice(0, max);
@@ -77,6 +85,9 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
 
     const maker = [data.manufacturer, data.model].filter(Boolean).join(' ');
     const props: CertificateProps = {
+      // The OG image is the copy most likely to be screenshotted and posted, so it
+      // carries the QR back to the live certificate.
+      permalink: `${siteBase(req)}/c/${serial}`,
       location: clip(data.address_line as string, 28),
       serial,
       manufacturer: clip(maker, 18, 'UNRECORDED'),

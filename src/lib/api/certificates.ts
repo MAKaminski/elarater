@@ -33,6 +33,8 @@ export function toCertificateProps(row: VisibleRating): CertificateProps {
   const maker = [row.manufacturer, row.model].filter(Boolean).join(' ');
 
   return {
+    // A certificate with no serial yet has nothing to link to, so it gets no QR.
+    permalink: row.serial ? certificateUrl(row.serial) : undefined,
     location: clip(row.address_line, 28),
     serial: row.serial ?? 'PENDING',
     manufacturer: clip(maker, 18, 'UNRECORDED'),
