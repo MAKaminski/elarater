@@ -20,7 +20,8 @@
       "Bash(git commit -q -m 'Make the app actually usable: discovery without GPS, and a way to sign in *)",
       "Bash(grep -vE \"dependabot|^remote:\\\\s*$\")",
       "Bash(git commit *)",
-      "Bash(rm -f /tmp/msg.txt)"
+      "Bash(rm -f /tmp/msg.txt)",
+      "Bash(xargs -I{} echo \"{} RLS assertions still passing\")"
     ]
   }
 }

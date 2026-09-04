@@ -11,8 +11,10 @@ import { useState } from 'react';
 import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { useResponsive } from '@/lib/useResponsive';
 import { ActionButton } from '@/components/ActionButton';
+import { PhotoPicker, type PickedPhoto } from '@/components/PhotoPicker';
 import { FormLabel, PaperSurface, Rule, ScoreDisplay, WallSurface } from '@/components/primitives';
 import { createRating } from '@/lib/api/ratings';
+import { uploadPhoto } from '@/lib/api/photos';
 import { useProfile, useSession } from '@/lib/auth/useSession';
 import { computeScore } from '@/lib/certificate/bands';
 import { enqueue } from '@/lib/offline/queue';
@@ -46,6 +48,7 @@ export default function RateFlow() {
   });
   const [remark1, setRemark1] = useState('');
   const [remark2, setRemark2] = useState('');
+  const [photo, setPhoto] = useState<PickedPhoto | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const complete = CRITERIA.every((c) => scores[c.key] !== null);
@@ -72,7 +75,21 @@ export default function RateFlow() {
       });
 
       try {
-        return await createRating(input, user.id);
+        const ratingId = await createRating(input, user.id);
+        // The photo follows the rating rather than blocking it: an inspection that
+        // succeeded must not be lost because an upload failed on lift wifi.
+        if (photo && ratingId) {
+          try {
+            await uploadPhoto(
+              { elevatorId, uri: photo.uri, mimeType: photo.mimeType,
+                width: photo.width, height: photo.height, ratingId },
+              user.id,
+            );
+          } catch {
+            // The certificate still stands; the photo simply is not attached.
+          }
+        }
+        return ratingId;
       } catch (e) {
         // Elevators are exactly where signal disappears. Queue it and move on.
         const message = (e as Error).message;
@@ -206,6 +223,8 @@ export default function RateFlow() {
             </View>
           ))}
         </View>
+
+        <PhotoPicker photo={photo} onChange={setPhoto} />
 
         {preview !== null ? (
           <PaperSurface padding="md" style={{ alignItems: 'center' }}>

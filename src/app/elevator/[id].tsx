@@ -9,9 +9,11 @@ import { Pressable, ScrollView, Text, View } from 'react-native';
 import { ActionButton } from '@/components/ActionButton';
 import { Certificate } from '@/components/certificate/Certificate';
 import { FramedCertificate } from '@/components/certificate/Frame';
+import { PhotoStrip } from '@/components/PhotoPicker';
 import { ReportSheet } from '@/components/ReportSheet';
 import { FormLabel, PaperSurface, Rule, StampSeal, WallSurface } from '@/components/primitives';
 import { getElevatorRatings } from '@/lib/api/elevators';
+import { getElevatorPhotos, photoUrl } from '@/lib/api/photos';
 import { toCertificateProps } from '@/lib/api/certificates';
 import { shareCertificate } from '@/lib/share';
 import type { VisibleRating } from '@/lib/schemas/rating';
@@ -25,11 +27,17 @@ export default function ElevatorPage() {
   }>();
   const router = useRouter();
   const [reporting, setReporting] = useState<VisibleRating | null>(null);
+  const [reportingPhoto, setReportingPhoto] = useState<string | null>(null);
   const frameRef = useRef(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ['elevator', id],
     queryFn: () => getElevatorRatings(id),
+  });
+
+  const photos = useQuery({
+    queryKey: ['elevator-photos', id],
+    queryFn: () => getElevatorPhotos(id),
   });
 
   const latest = data?.[0];
@@ -117,6 +125,15 @@ export default function ElevatorPage() {
 
         <ActionButton label="FILE AN INSPECTION" onPress={() => router.push(`/rate/${id}`)} lantern />
 
+        <PhotoStrip
+          photos={(photos.data ?? []).map((p) => ({
+            id: p.id,
+            url: photoUrl(p.storage_path),
+            caption: p.caption,
+          }))}
+          onReport={setReportingPhoto}
+        />
+
         {data && data.length > 1 ? (
           <View style={{ gap: space.sm }}>
             <Rule tone="brass" opacity={0.35} />
@@ -155,6 +172,17 @@ export default function ElevatorPage() {
         targetId={reporting?.id ?? ''}
         authorId={reporting?.author_id}
         authorName={reporting?.author_display_name ?? reporting?.author_handle}
+      />
+
+      {/*
+        Photographs are moderated reactively — see migration 0018 — so reporting one
+        has to be as reachable as reporting a finding.
+      */}
+      <ReportSheet
+        visible={!!reportingPhoto}
+        onClose={() => setReportingPhoto(null)}
+        targetType="photo"
+        targetId={reportingPhoto ?? ''}
       />
     </WallSurface>
   );

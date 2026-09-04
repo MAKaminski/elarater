@@ -250,6 +250,8 @@ export type Database = {
       }
       photos: {
         Row: {
+          blurhash: string | null
+          caption: string | null
           created_at: string
           elevator_id: string
           height: number | null
@@ -263,6 +265,8 @@ export type Database = {
           width: number | null
         }
         Insert: {
+          blurhash?: string | null
+          caption?: string | null
           created_at?: string
           elevator_id: string
           height?: number | null
@@ -276,6 +280,8 @@ export type Database = {
           width?: number | null
         }
         Update: {
+          blurhash?: string | null
+          caption?: string | null
           created_at?: string
           elevator_id?: string
           height?: number | null
@@ -678,6 +684,18 @@ export type Database = {
           p_spotless: number
         }
         Returns: number
+      }
+      elevator_photos: {
+        Args: { limit_n?: number; p_elevator_id: string }
+        Returns: {
+          caption: string
+          created_at: string
+          height: number
+          id: string
+          storage_path: string
+          uploader_id: string
+          width: number
+        }[]
       }
       is_blocked: { Args: { p_other: string }; Returns: boolean }
       next_serial: { Args: { p_metro: string }; Returns: string }
